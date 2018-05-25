@@ -115,7 +115,7 @@ while (true)
 
 		console.log("Mining new block...")
 
-		let blockStruct = new Block(
+		var blockStruct = new Block(
 			blockHeight, 
 			timestamp,
 			transaction, 

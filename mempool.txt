@@ -1,1 +1,1 @@
-[{"type":"coinbase","from":"17xY4nkJxkiXvNa3a21mkpNfFo5jMEzm1P","to":"","stamp":1,"signature":"G3nne9TJDWvRxKVuuIXMS1nCq/lKsoSzRRpGcKSSi06nV3bngp11xODUcke0cSWwGySdVg8jRn8CP4uVZWBza1Y=","origin":"00009d82bf5d2ecf0459a98d44bb68b98fdb34e552ab22d96ea49b61b929b6b9","timestamp":1526510253982}]
+[{"type":"coinbase","from":"17xY4nkJxkiXvNa3a21mkpNfFo5jMEzm1P","to":"","stamp":0,"signature":"G4ARQ1PLkSW+zrSTGM+UpV08npGLvaqQuy4zlLa2Qc2jE6hZSlqvwq0yEGOSqBszB51CcOkPwfSY8LM4IA6KJVI=","origin":"000020e6636484d952c72d7d323364330f82404198e01595a038efcda8b3ecd5","timestamp":1527075517302}]
