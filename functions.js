@@ -4,7 +4,7 @@ var CoinKey = require('coinkey');
 var fs = require('fs');
 var colors = require('colors/safe')
 var request = require('urllib-sync').request;
-const SHA256 = require("crypto-js/sha256");
+const SHA512 = require('js-sha512');
 
 // converts string into hexadecimal
 
@@ -92,7 +92,7 @@ module.exports = {
 
   generateHash: function (string)
   {
-      return SHA256(string).toString();
+      return SHA512(string).toString();
   },
 
   getUrlContents: function (url, filename)
