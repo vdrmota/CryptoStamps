@@ -17,9 +17,9 @@ var colors = require('colors/safe')
 class Block 
 {
 
-    constructor(index, timestamp, payload, issuer, privateKey, previousHash = "") 
+    constructor(height, timestamp, payload, issuer, privateKey, previousHash = "") 
     {
-        this.index = index;
+        this.height = height;
         this.previousHash = previousHash;
         this.timestamp = timestamp;
         this.payload = payload;
@@ -33,7 +33,7 @@ class Block
 
     calculateHash() 
     {
-        return helpers.generateHash(this.index + this.previousHash + this.timestamp + JSON.stringify(this.payload) + this.nonce + this.issuer);
+        return helpers.generateHash(this.height + this.previousHash + this.timestamp + JSON.stringify(this.payload) + this.nonce + this.issuer);
     }
 
     // encrypt block with miner's private key
@@ -74,7 +74,7 @@ class Block
 
         if (condition)
         {
-            console.log(colors.green("BLOCK #" +this.index+ " MINED: " + this.hash));
+            console.log(colors.green("BLOCK #" +this.height+ " MINED: " + this.hash));
             return true
         }
         else
@@ -126,9 +126,9 @@ class Transaction
 
 class LoadBlock
 {
-    constructor(index, timestamp, payload, issuer, signature, hash, nonce, previousHash = "") 
+    constructor(height, timestamp, payload, issuer, signature, hash, nonce, previousHash = "") 
     {
-        this.index = index;
+        this.height = height;
         this.previousHash = previousHash;
         this.timestamp = timestamp;
         this.payload = payload;
@@ -141,7 +141,7 @@ class LoadBlock
     // calculates hash
 
     calculateHash() {
-        return helpers.generateHash(this.index + this.previousHash + this.timestamp + JSON.stringify(this.payload) + this.nonce + this.issuer);
+        return helpers.generateHash(this.height + this.previousHash + this.timestamp + JSON.stringify(this.payload) + this.nonce + this.issuer);
     }
 
 }

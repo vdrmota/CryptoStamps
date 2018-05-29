@@ -35,11 +35,11 @@ module.exports = {
 		console.log("Broadcasting mempool...")
 	},
 
-	transaction: function(type, from, to, stamp, signature, origin, timestamp)
+	transaction: function(type, from, to, stamp, signature, origin, timestamp, mempoolFile)
 	{
 		// right now this broadcasts to local mempool, but it should broadcast to actual mempool in the future
 		var transaction = new Transaction(type, from, to, stamp, signature, origin, timestamp)
-		var current = fs.readFileSync("mempool.txt")
+		var current = fs.readFileSync(mempoolFile)
 		if (current != "")
 		{
 			current = JSON.parse(current)
@@ -49,6 +49,6 @@ module.exports = {
 		{
 			current = [JSON.stringify(transaction)]
 		}
-		fs.writeFileSync("mempool.txt", JSON.stringify(current))
+		fs.writeFileSync(mempoolFile, JSON.stringify(current))
 	}
 }

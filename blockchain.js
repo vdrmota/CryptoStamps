@@ -54,6 +54,22 @@ module.exports = {
 
 		return newChain
 
+  },
+
+  // looks for a hash and check if it was sent by same person, returns true if found, false if not found
+
+  find: function (blockchainFile, hash, sender)
+  {
+  		var blockchain = JSON.parse(fs.readFileSync(blockchainFile).toString()).chain
+  		for (var i = 0, n = blockchain.length; i < n; i++)
+  		{
+  			if (blockchain[i].hash == hash && blockchain[i].issuer == sender)
+  			{
+  				return true
+  			}
+  		}
+
+  		return false
   }
 
 }

@@ -110,6 +110,12 @@ module.exports = {
   listStamps: function(directory)
   {
       return fs.readdirSync(directory)
+  },
+
+  findNumFromHash: function(hash, totalStamps)
+  {
+    let length = hash.length
+    return (parseInt(hash[length - 4], 16) + parseInt(hash[length - 3], 16) + parseInt(hash[length - 2], 16) + parseInt(hash[length - 1], 16)) % totalStamps
   }
 
 };
