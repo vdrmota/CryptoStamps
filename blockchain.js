@@ -28,9 +28,10 @@ module.exports = {
 
   // updates local state of blockchain
 
-  read: function (blockchainFile, difficulty, interval) {
+  read: function (blockchainFile, difficulty, interval, verbose) {
 
-		console.log("Loading blockchain...")
+  		if (verbose)
+			console.log("Loading blockchain...")
 
 		var blockchain = fs.readFileSync(blockchainFile).toString()
 
@@ -46,11 +47,13 @@ module.exports = {
 
 		for (var i = 1; i < l; i++) 
 		{
-		    newChain.oldBlock(new LoadBlock(contents.chain[i].index, contents.chain[i].timestamp, contents.chain[i].data, contents.chain[i].issuer, contents.chain[i].signature, contents.chain[i].hash, contents.chain[i].nonce));
-		    console.log("Loading block " + i + "...")
+		    newChain.oldBlock(new LoadBlock(contents.chain[i].height, contents.chain[i].timestamp, contents.chain[i].payload, contents.chain[i].issuer, contents.chain[i].signature, contents.chain[i].hash, contents.chain[i].nonce));
+		    if (verbose)	
+		    	console.log("Loading block " + i + "...")
 		}
 
-		console.log(colors.green("Successfully loaded " + (l-1) + " blocks"))
+		if (verbose)
+			console.log(colors.green("Successfully loaded " + (l-1) + " blocks"))
 
 		return newChain
 
@@ -58,7 +61,7 @@ module.exports = {
 
   // looks for a hash and check if it was sent by same person, returns true if found, false if not found
 
-  find: function (blockchainFile, hash, sender)
+  findHash: function (blockchainFile, hash, sender)
   {
   		var blockchain = JSON.parse(fs.readFileSync(blockchainFile).toString()).chain
   		for (var i = 0, n = blockchain.length; i < n; i++)
@@ -70,6 +73,51 @@ module.exports = {
   		}
 
   		return false
+  },
+
+  // looks if the reward origin already exists in a payload on the blockchain
+  // returns true if the reward has already been retrieved; false if not
+
+
+  findReward: function (blockchainFile, origin)
+  {
+  		var blockchain = JSON.parse(fs.readFileSync(blockchainFile).toString()).chain
+  		for (var i = 0, n = blockchain.length; i < n; i++)
+  		{
+  			if (blockchain[i].payload.origin == origin)
+  			{
+  				return true
+  			}
+  		}
+
+  		return false
+  },
+
+  // iterates through the blocks in two chains and returns any blocks that are missing in first chain
+  // returns an array
+
+  blocksDiff: function (localChain, remoteChain)
+  {
+  		var chain = remoteChain.chain
+  		var localChainLength = localChain.chain.length
+  		var newBlocks = []
+  		for (var i = 1, n = chain.length; i < n; i++)
+        {
+        	// check all the way to the end of local chain
+        	if (localChainLength > i)
+        	{
+	        	// check if this hash is at the same index in local chain
+	        	if (chain[i].hash == localChain.chain[i].hash)
+	        		continue
+	        	else 
+	        		newBlocks.push(chain[i])
+        	}
+        	else
+        	{
+        		newBlocks.push(chain[i])
+        	}
+        }
+        return newBlocks
   }
 
 }

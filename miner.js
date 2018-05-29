@@ -75,7 +75,7 @@ let credentials = new User(fetchCredentials.username, fetchCredentials.privateKe
 
 //mempool.refresh()
 //blockchain.refresh() 
-var chain = blockchain.read(blockchainFile, difficulty, updateInterval)
+var chain = blockchain.read(blockchainFile, difficulty, updateInterval, true)
 var blockHeight = chain.chain.length; 
 
 // begin mining

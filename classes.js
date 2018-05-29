@@ -191,16 +191,30 @@ class LoadBlockchain
     }
 
     // continues mining latest block onto the blockchain
+
     continueMining()
     {
         return this.getLatestBlock().mineBlock(this.difficulty, this.interval)
     }
 
+    // calculates the amount of (proof of) work that has gone into mining this chain
+    // total work is measured by the total nonce value
+
+    calculateWork()
+    {
+        var totalWork = 0
+        for (var i = 1, n = this.chain.length; i < n; i++)
+        {
+            totalWork += this.chain[i].nonce
+        }
+        return totalWork
+    }
+
     // checks if chain is valid
 
-    isChainValid() 
+    validateChain() 
     {
-        for (let i = 1; i < this.chain.length; i++)
+        for (var i = 1, n = this.chain.length; i < n; i++)
         {
             const currentBlock = this.chain[i];
             const previousBlock = this.chain[i - 1];

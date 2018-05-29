@@ -44,5 +44,34 @@ module.exports = {
 
 		// select random transaction from mempool
 		return [data[randomIndex], randomIndex]
+	},
+
+	// checks if all the components of a transaction are there
+
+	transactionStructure: function (transaction) {
+		// type
+		if ((typeof transaction.type) === 'undefined')
+			return false
+		
+		// from
+		if ((typeof transaction.from) === 'undefined')
+			return false
+		// to
+		if ((typeof transaction.to) === 'undefined')
+			return false
+		// stamp
+		if ((typeof transaction.stamp) === 'undefined')
+			return false
+		// signature
+		if ((typeof transaction.signature) === 'undefined')
+			return false
+		// origin
+		if ((typeof transaction.origin) === 'undefined')
+			return false
+		// timestamp
+		if ((typeof transaction.timestamp) === 'undefined')
+			return false
+		
+		return true // transaction structure exists
 	}
 }
