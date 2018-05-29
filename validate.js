@@ -2,6 +2,7 @@ var bitcoin = require('bitcoinjs-lib')
 var bitcoinMessage = require('bitcoinjs-message')
 var CoinKey = require('coinkey')
 var imageHash = require('hasha')
+var colors = require('colors/safe')
 
 var blockchain = require('./blockchain.js')
 var helpers = require('./functions.js')
@@ -18,12 +19,7 @@ function decodeSignature (buffer)
   var flagByte = buffer.readUInt8(0) - 27
   if (flagByte > 7) return false
 
-  return 
-  {
-    compressed: !!(flagByte & 4),
-    recovery: flagByte & 3,
-    signature: buffer.slice(1)
-  }
+  return buffer.slice(1)
 }
 
 /*
@@ -32,33 +28,41 @@ function decodeSignature (buffer)
 
 function transaction (transaction)
 {
-	// ensure that signature is a buffer
+	try { // since there is some dependency on libraries; to prevent crash
 
-	signature = Buffer.from(transaction.signature, 'base64')
-	if(!signature instanceof Buffer)
+		// ensure that signature is a buffer
+
+		var signature = Buffer.from(transaction.signature, 'base64')
+		if(!signature instanceof Buffer)
+			return false
+		if(!decodeSignature(signature))
+			return false
+
+		//find origin on blockchain
+
+		if (!blockchain.find(blockchainFile, transaction.origin, transaction.from))
+			return false
+
+		// check if stamp index was calculated correctly
+
+		if (helpers.findNumFromHash(transaction.origin, totalStamps) != transaction.stamp)
+			return false
+
+		//check if signature is valid
+		
+		var filename = helpers.getStamp(transaction.stamp, stamps, stampsDir);
+		var data = imageHash(filename);
+		var signatureBuffer = new Buffer(transaction.signature, 'base64'); // because signature comparison is in binary code
+		if (!bitcoinMessage.verify(data, transaction.from, signatureBuffer))
+			return false
+
+		console.log(colors.green("Transaction "+transaction.signature+" is valid."))
+		return true // transaction is valid
+	}
+	catch (err)
+	{
 		return false
-	if(!decodeSignature(signature))
-		return false
-
-	// find origin on blockchain
-
-	if (!blockchain.find(blockchainFile, transaction.origin, transaction.from))
-		return false
-
-	// check if stamp index was calculated correctly
-
-	if (helpers.findNumFromHash(transaction.origin, totalStamps) != transaction.stamp)
-		return false
-
-	// check if signature is valid
-	
-	var filename = helpers.getStamp(transaction.stamp, stamps, stampsDir);
-	var data = imageHash(filename);
-	var signatureBuffer = new Buffer(transaction.signature, 'base64'); // because signature comparison is in binary code
-	if (!bitcoinMessage.verify(data, transaction.from, signatureBuffer))
-		return false
-
-	return true // if transaction passed the checks
+	}
 }
 
 // receive mined block to validate
@@ -87,6 +91,4 @@ function transaction (transaction)
 // append it to chain, see if chain is valid
 
 
-console.log(transaction(JSON.parse('[{"type":"coinbase","from":"17xY4nkJxkiXvNa3a21mkpNfFo5jMEzm1P","to":"","stamp":0,"signature":"G1nz8vXVeosibJmhop0ShwfpVdzXpFGj0OVLJaUmUMBVChzf+0O9bnRgUw6AgCVBlzBEIQTR+mt5Fs9hGp5ykUo=","origin":"000075e28e80aa19c10f33fe8a4bfedbe6b3082e56f77415ae80d5445e5c0bfa3087423e6cc1babc89c4145ab207c6d9e39b6f4f3ae5224fb25760d176c3a44c","timestamp":1527508352364}]')[0]))
-
-
+transaction(JSON.parse('[{"type":"coinbase","from":"17xY4nkJxkiXvNa3a21mkpNfFo5jMEzm1P","to":"","stamp":1,"signature":"HNhl3HHj7tXTYhqQjITFfJDnycMkmCbnPfYAIVZGdkvjOyYdDbSgNQrUgKJVZGYRdj5sDEEmVrSebwvwIHSRCZk=","origin":"00001ebbc9c6b1127a6af68ac749e617fd79bc1c21539043e9637f3523c08cfde879f9281bed634624c1b4b7e480a72ef43f2d6df01a66e8c515db8cea7f5057","timestamp":1527593855804}]')[0])

@@ -32,11 +32,11 @@ module.exports = {
 
 		// retrieve the hash of the file (this will be the signed data)
 
-		var data = imageHash(filename)
+		var message = imageHash(filename)
 
 		// retrieve private key
 
-		var retrieveCredentials = helpers.getCredentials("credentials.txt")
+		var retrieveCredentials = helpers.getCredentials(credentialsFile)
 		var privateKey = retrieveCredentials.privateKey
 		var publicKey = retrieveCredentials.publicKey
 		var key = new CoinKey(new Buffer(privateKey, 'hex'))
@@ -44,7 +44,6 @@ module.exports = {
 
 		var keyPair = bitcoin.ECPair.fromWIF(key.privateWif)
 		var privateKey = keyPair.d.toBuffer(32)
-		var message = imageHash(filename)
 
 		var signature = bitcoinMessage.sign(message, privateKey, keyPair.compressed).toString('base64')
 
