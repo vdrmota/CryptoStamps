@@ -52,7 +52,6 @@ module.exports = {
 		// type
 		if ((typeof transaction.type) === 'undefined')
 			return false
-		
 		// from
 		if ((typeof transaction.from) === 'undefined')
 			return false

@@ -5,6 +5,7 @@ var fs = require('fs');
 var colors = require('colors/safe')
 var request = require('urllib-sync').request;
 const SHA512 = require('js-sha512');
+var bitcoinMessage = require('bitcoinjs-message');
 
 // converts string into hexadecimal
 
@@ -116,6 +117,43 @@ module.exports = {
   {
     let length = hash.length
     return (parseInt(hash[length - 4], 16) + parseInt(hash[length - 3], 16) + parseInt(hash[length - 2], 16) + parseInt(hash[length - 1], 16)) % totalStamps
+  },
+
+  // checks whether a message was signed by the private key corresponding to the public key
+  // works because of asymmetric encryption
+  // returns true if private key (corresponding to publicKey) was used to sign message
+  // useful for checking whether node (represented by publicKey) indeed approved of message
+
+  verifySignature: function (message, publicKey, signature)
+  {
+    try 
+    { // since there is dependency on library; to prevent crash caused by library
+        if (!bitcoinMessage.verify(message, publicKey, signature))
+        {
+            return false
+        }
+    }
+    catch (err)
+    {
+        return false
+    }
+      return true
+  },
+
+  // checks whether a timestamp is valid
+  // returns true if timestamp is greater than median of past 11 blocks (valid) ...
+  // ... and lower than current unix (epoch + 2 hours)
+  // returns false if timestamp is not valid
+
+  timestampCheck: function (timestamp)
+  {
+      var currentTimeStamp = Date.now()
+
+      if (timestamp < (currentTimeStamp + 7200) && timestamp > median(11))
+      {
+
+      }
+
   }
 
 };

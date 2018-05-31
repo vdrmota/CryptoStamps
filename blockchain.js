@@ -30,7 +30,7 @@ module.exports = {
 
   read: function (blockchainFile, difficulty, interval, verbose) {
 
-  		if (verbose)
+  	if (verbose)
 			console.log("Loading blockchain...")
 
 		var blockchain = fs.readFileSync(blockchainFile).toString()
@@ -47,7 +47,7 @@ module.exports = {
 
 		for (var i = 1; i < l; i++) 
 		{
-		    newChain.oldBlock(new LoadBlock(contents.chain[i].height, contents.chain[i].timestamp, contents.chain[i].payload, contents.chain[i].issuer, contents.chain[i].signature, contents.chain[i].hash, contents.chain[i].nonce));
+		    newChain.oldBlock(new LoadBlock(contents.chain[i].height, contents.chain[i].timestamp, contents.chain[i].payload, contents.chain[i].issuer, contents.chain[i].signature, contents.chain[i].hash, contents.chain[i].nonce, contents.chain[i].previousHash));
 		    if (verbose)	
 		    	console.log("Loading block " + i + "...")
 		}

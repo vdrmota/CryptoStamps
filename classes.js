@@ -59,7 +59,8 @@ class Block
         var intervalCounter = 0
         var condition = true
 
-        while (this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")) {
+        while (this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")) 
+        {
             this.nonce++;
             this.hash = this.calculateHash();
 
@@ -177,7 +178,7 @@ class LoadBlockchain
 
     oldBlock(newBlock) 
     {
-        newBlock.previousHash = this.getLatestBlock().hash;
+        //newBlock.previousHash = this.getLatestBlock().hash;
         this.chain.push(newBlock);
     }
 
@@ -219,33 +220,34 @@ class LoadBlockchain
             const currentBlock = this.chain[i];
             const previousBlock = this.chain[i - 1];
 
-            // check if payload hasn't been tampered with
+            // check if block hasn't been tampered with
 
             if (currentBlock.hash !== currentBlock.calculateHash()) 
             {
-                return false;
+                return {"res": false, "message": "Block #" + (i+1) + " hash invalid."}
             }
 
             // check if block order hasn't been tampered with
 
             if (currentBlock.previousHash !== previousBlock.hash) 
             {
-                return false;
+                return {"res": false, "message": "Block #" + (i+1) + " order incorrect."}
             }
 
-            // check if payload was approved by miner
+            // check if payload was approved (via signature) by miner who mined the block
 
-            var address = currentBlock.issuer;
-            var signature = currentBlock.signature;
-            var message = JSON.stringify(currentBlock.payload);
-
-            if (!bitcoinMessage.verify(message, address, signature))
+            if (!helpers.verifySignature(
+                    JSON.stringify(currentBlock.payload), 
+                    currentBlock.issuer,
+                    currentBlock.signature
+                ))
             {
-                return false;
+                return {"res": false, "message": "Block #" + (i+1) + " signature invalid."}
             }
+
         }
 
-        return true;
+        return {"res": true, "message": "Success."}
     }
 }
 
