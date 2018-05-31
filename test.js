@@ -1,3 +1,14 @@
-var difficulty = require('./difficulty.js')
 
-console.log(difficulty.check(200, 2))
+var broadcast = require('./broadcast.js')
+
+
+broadcast.blockchain("blockchain.txt")
+
+
+setTimeout(function() {
+
+	while (true)
+	{
+
+	}
+}, 3000);

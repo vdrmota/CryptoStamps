@@ -136,8 +136,13 @@ function block (block, localChain)
 function chain (blockchainFile, remoteBlockchainFile)
 {
 
+	// read local chain
 	var localChain = blockchain.read(blockchainFile, difficulty, updateInterval, false)
-	var remoteChain = blockchain.read(remoteBlockchainFile, difficulty, updateInterval, false)
+	// read remote chain, if structure is invalid -> return false
+	try {
+		var remoteChain = blockchain.read(remoteBlockchainFile, difficulty, updateInterval, false) }
+	catch (err) {
+		return {"res": false, "message": "Remote chain completely invalid."} }
 
 	// check if local blockchain state is valid
 	var localValidation = localChain.validateChain()

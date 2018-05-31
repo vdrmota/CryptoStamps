@@ -117,6 +117,7 @@ while (true)
 		if (chain.addBlock(blockStruct))
 			// block was mined
 			blockMined(chain, transactionIndex)
+
 		else
 			// block wasn't mined
 			blockNotMined(transaction)
