@@ -22,19 +22,6 @@ module.exports = {
 		console.log("Broadcasting blockchain...")
 	},
 
-	mempool: function(mempoolFile)
-	{
-		// add code here that broadcasts new mempool
-		var mempool = fs.readFileSync(mempoolFile).toString()
-		var res = request('POST', 'http://stamps.vojtadrmota.com:80/mempool.php', {
-			headers: {       
-    			'content-type': 'application/x-www-form-urlencoded'
-  			},
-			body: "mempool="+mempool
-		})
-		console.log("Broadcasting mempool...")
-	},
-
 	transaction: function(type, from, to, stamp, signature, origin, timestamp, mempoolFile)
 	{
 		// right now this broadcasts to local mempool, but it should broadcast to actual mempool in the future

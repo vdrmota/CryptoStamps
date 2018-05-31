@@ -1,7 +1,7 @@
 [
 	{
 		"startTime": 100,
-		"endTime": 0,
+		"endTime": -1,
 		"difficulty": 4
 	}
 ]

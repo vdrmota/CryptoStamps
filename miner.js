@@ -31,7 +31,7 @@ var nonce = 0 // stores nonce in case mining continues after mempool refresh
 var emptyMempoolSwitch = false // only alert client if mempool is empty once
 var blockFound = true // triggers the mining of a new block
 
-// define miner functions
+// triggered every time you mine a block
 
 function blockMined(chain, transactionIndex)
 {
@@ -41,23 +41,18 @@ function blockMined(chain, transactionIndex)
 	broadcast.blockchain(blockchainFile)
 	// set pending reward for yourself
 	rewards.pending(chain.chain.slice(-1)[0].hash, rewardsFile) 
-	// retrieve reward
+	// retrieve reward and broadcast it
 	rewards.retrieve(rewardsFile)
-	// refresh mempool
-	//mempool.refresh()
 	// remove just-mined transaction from my mempool
 	mempool.remove(transactionIndex)
-	//broadcast.mempool(mempoolFile)
 	// start mining new block
 	blockFound = true
 }
 
+// triggered every updateInterval hashes
+
 function blockNotMined(transaction)
 {
-	// update local state of blockchain
-	//blockchain.refresh()
-	// refresh local state of mempool
-	//mempool.refresh()
 	// check if transaction is still in mempool
 	/*if (mempool.exists(transaction))
 		blockFound = false

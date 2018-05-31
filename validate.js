@@ -7,6 +7,7 @@ var colors = require('colors/safe')
 var blockchain = require('./blockchain.js')
 var helpers = require('./functions.js')
 var mempool = require('./mempool.js')
+var difficultyCheck = require('./difficulty.js')
 
 const blockchainFile = "blockchain.txt"
 const remoteBlockchainFile = "remoteBlockchain.txt"
@@ -53,7 +54,6 @@ function transaction (transaction, blockchainFile, mempoolEntry, verbose)
 			}
 			
 			// ensure that signature is a buffer
-
 			var signature = Buffer.from(transaction.signature, 'base64')
 			if(!signature instanceof Buffer)
 				return { "res": false, "message": "Transaction binary invalid (1)." }
@@ -61,17 +61,14 @@ function transaction (transaction, blockchainFile, mempoolEntry, verbose)
 				return { "res": false, "message": "Transaction binary invalid (2)." }
 
 			// find origin hash on blockchain, checking if the block was mined by node asking for reward
-
 			if (!blockchain.findHash(blockchainFile, transaction.origin, transaction.from))
 				return { "res": false, "message": "Transaction origin invalid." }
 
 			// check if stamp index was calculated correctly
-
 			if (helpers.findNumFromHash(transaction.origin, totalStamps) != transaction.stamp)
 				return { "res": false, "message": "Stamp calculation incorrect." }
 
 			//check if signature is valid
-			
 			var filename = helpers.getStamp(transaction.stamp, stamps, stampsDir)
 			var data = imageHash(filename)
 			var signatureBuffer = new Buffer(transaction.signature, 'base64') // because signature comparison is in binary code
@@ -107,8 +104,9 @@ function block (block, localChain)
     }
 
 	// check if payload in block is valid
-	if (!transaction(block.payload, remoteBlockchainFile, false, false).res)
-		return {"res": false, "message": "Block payload invalid."}
+	var payloadCheck = transaction(block.payload, remoteBlockchainFile, false, false)
+	if (!payloadCheck.res)
+		return {"res": false, "message": "Block payload invalid. " + payloadCheck.message}
 
 	// check that miner didn't mine his/her own reward
 	// disable this during debugging
@@ -120,6 +118,8 @@ function block (block, localChain)
 		return {"res": false, "message": "Block timestamp invalid. Possibly, local chain is outdated: download new state."}
 
 	// ensure that block difficulty is appropriate
+	if (!difficultyCheck.check(block.timestamp, block.hash))
+		return {"res": false, "message": "Block difficulty invalid."}
 
 	return {"res": true, "message": "Block signature invalid."} // block is valid
 
@@ -158,6 +158,8 @@ function chain (blockchainFile, remoteBlockchainFile)
 	var newBlocks = blockchain.blocksDiff(localChain, remoteChain)
 	var newBlocksValid = true // assume blocks are valid until proven otherwise
 
+	console.log(colors.yellow("Validating " + newBlocks.length + " new blocks..."))
+
 	// iterate through the new blocks -> check if each is valid
 	for (var i = 0, n = newBlocks.length; i < n; i++)
 	{ 
@@ -175,13 +177,12 @@ function chain (blockchainFile, remoteBlockchainFile)
 	if (!newBlocksValid)
 		return {"res": false, "message": "Remote chain contains invalid blocks."}
 
-	return {"res": true, "message": "Remote blockchain is valid."} // if the blockchain is fully valid
+	return {"res": true, "message": "Success."} // if the blockchain is fully valid
 }
 
 
 // Examples:
-// console.log(chain("blockchain.txt", "remoteBlockchain.txt").message)
+ console.log(chain("blockchain.txt", "remoteBlockchain.txt").message)
 // console.log(transaction({"type":"coinbase","from":"17xY4nkJxkiXvNa3a21mkpNfFo5jMEzm1P","to":"","stamp":1,"signature":"HNhl3HHj7tXTYhqQjITFfJDnycMkmCbnPfYAIVZGdkvjOyYdDbSgNQrUgKJVZGYRdj5sDEEmVrSebwvwIHSRCZk=","origin":"000065b3b2dadcd5e2e2bb4ca84b8d1a99f23723ddb74c3807cf2c171b824bbf7615171740ada1ad32a40e5dac9d054b4bff49e88294a7c01e474b92e00a5c11","timestamp":1527760288138}, "remoteBlockchain.txt", true, true).message)
 
 // if remote blockchain has more work, is valid, and all its blocks are valid -> adopt it locally
-

@@ -8,6 +8,8 @@ module.exports = {
 		fs.appendFileSync(filename, hash+"\n")
 	},
 
+	// signs reward and puts it into mempool
+
 	retrieve: function(filename)
 	{
 		var rewards = fs.readFileSync(filename).toString()
