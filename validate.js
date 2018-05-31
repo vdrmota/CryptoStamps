@@ -76,7 +76,7 @@ function transaction (transaction, blockchainFile, mempoolEntry, verbose)
 			var data = imageHash(filename)
 			var signatureBuffer = new Buffer(transaction.signature, 'base64') // because signature comparison is in binary code
 			if (!bitcoinMessage.verify(data, transaction.from, signatureBuffer))
-				return { "res": false, "message": "Transaction signature invalid." }
+				return { "res": false, "message": "Transaction signature invalid (1)." }
 			if (verbose)
 				console.log("Transaction "+transaction.signature+" is "+colors.green("valid")+".")
 			return { "res": true, "message": "Success." } // transaction is valid
@@ -84,7 +84,7 @@ function transaction (transaction, blockchainFile, mempoolEntry, verbose)
 		}
 		catch (err)
 		{
-			return false
+			return { "res": true, "message": "Transaction signature invalid (2)." } 
 		}
 	}
 }
@@ -93,7 +93,7 @@ function transaction (transaction, blockchainFile, mempoolEntry, verbose)
 	 Validating a block
 */
 
-function block (block)
+function block (block, localChain)
 {
 
 	// check if signature of block's payload is valid
@@ -116,15 +116,13 @@ function block (block)
 	// 	return {"res": false, "message": "Block miner mined own reward."}
 
 	// ensure that timestamp wasn't tampered with
-	// if (!helpers.timestampCheck(block.timestamp))
-	// 	return {"res": false, "message": "Block timestamp invalid."}
+	if (!helpers.timestampCheck(block.timestamp, localChain))
+		return {"res": false, "message": "Block timestamp invalid. Possibly, local chain is outdated: download new state."}
 
-	/*
-		no difficulty check is necessary: miners race to find the highest difficult 
-		because the blockchain with most work is truth
-	*/
+	// ensure that block difficulty is appropriate
 
 	return {"res": true, "message": "Block signature invalid."} // block is valid
+
 
 }
 
@@ -137,6 +135,7 @@ function block (block)
 
 function chain (blockchainFile, remoteBlockchainFile)
 {
+
 	var localChain = blockchain.read(blockchainFile, difficulty, updateInterval, false)
 	var remoteChain = blockchain.read(remoteBlockchainFile, difficulty, updateInterval, false)
 
@@ -162,7 +161,7 @@ function chain (blockchainFile, remoteBlockchainFile)
 	// iterate through the new blocks -> check if each is valid
 	for (var i = 0, n = newBlocks.length; i < n; i++)
 	{ 
-		var verifyBlock = block(newBlocks[i], newBlocks[i])
+		var verifyBlock = block(newBlocks[i], localChain)
 		if (!verifyBlock.res)
 		{
 			console.log(colors.red("INVALID BLOCK FOUND! ") + "Remote block #" + (i+1) + " Error: " + verifyBlock.message)
@@ -176,10 +175,13 @@ function chain (blockchainFile, remoteBlockchainFile)
 	if (!newBlocksValid)
 		return {"res": false, "message": "Remote chain contains invalid blocks."}
 
-	return {"res": true, "message": "Success."} // if the blockchain is fully valid
+	return {"res": true, "message": "Remote blockchain is valid."} // if the blockchain is fully valid
 }
 
-console.log(chain("blockchain.txt", "remoteBlockchain.txt").message)
+
+// Examples:
+// console.log(chain("blockchain.txt", "remoteBlockchain.txt").message)
+// console.log(transaction({"type":"coinbase","from":"17xY4nkJxkiXvNa3a21mkpNfFo5jMEzm1P","to":"","stamp":1,"signature":"HNhl3HHj7tXTYhqQjITFfJDnycMkmCbnPfYAIVZGdkvjOyYdDbSgNQrUgKJVZGYRdj5sDEEmVrSebwvwIHSRCZk=","origin":"000065b3b2dadcd5e2e2bb4ca84b8d1a99f23723ddb74c3807cf2c171b824bbf7615171740ada1ad32a40e5dac9d054b4bff49e88294a7c01e474b92e00a5c11","timestamp":1527760288138}, "remoteBlockchain.txt", true, true).message)
 
 // if remote blockchain has more work, is valid, and all its blocks are valid -> adopt it locally
 

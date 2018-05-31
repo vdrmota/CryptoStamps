@@ -21,6 +21,31 @@ function toHex(str)
     return hex;
 }
 
+// finds the median timestamp of last count blocks on remoteChain
+
+function median(localChain, count)
+{
+    var length = localChain.chain.length
+    var timestamps = []
+
+    // loops from last block to 11th block from end
+    for (var i = length-1; i > length-12; i--)
+    {
+        try 
+        {
+            timestamps.push(localChain.chain[i].timestamp)
+        }
+        catch (err)
+        {
+            break
+        }
+    }
+
+    timestamps = timestamps.sort((a, b) => a - b)
+
+    return timestamps[parseInt(timestamps.length / 2)]
+}
+
 // export the functions below as helpers
 
 module.exports = {
@@ -145,15 +170,12 @@ module.exports = {
   // ... and lower than current unix (epoch + 2 hours)
   // returns false if timestamp is not valid
 
-  timestampCheck: function (timestamp)
+  timestampCheck: function (timestamp, localChain)
   {
-      var currentTimeStamp = Date.now()
-
-      if (timestamp < (currentTimeStamp + 7200) && timestamp > median(11))
-      {
-
-      }
-
+      var upperBound = Date.now() + 7200 // 2 hours from now
+      var lowerBound = median(localChain, 11) // median of last 11 blocks
+      
+      return timestamp > lowerBound && timestamp < upperBound
   }
 
 };

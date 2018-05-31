@@ -1,8 +1,3 @@
-var blockchain = require('./blockchain.js')
-
-var localChain = blockchain.read("blockchain.txt", 4, 10000, false)
-var remoteChain = blockchain.read("remoteBlockchain.txt", 4, 10000, false)
-
-var newBlocks = blockchain.blocksDiff(localChain, remoteChain)
-
-console.log(newBlocks)
+var numArray = [7, 3, 1, 5, 8, 3, 8,9,2]
+numArray = numArray.sort((a, b) => a - b)
+console.log(numArray)
