@@ -16,14 +16,26 @@ module.exports = {
 	},
 
 	remove: function (transactionIndex) {
-		// add code here that removes transaction from local mempool
 		var data = JSON.parse(fs.readFileSync(memPoolFile))
 		data.splice(transactionIndex, 1)
 		fs.writeFileSync(memPoolFile, JSON.stringify(data))
 	},
 
 	exists: function (transaction) {
-		return fs.readFileSync(memPoolFile).toString().indexOf(transaction) > -1
+		try
+		{
+			var data = JSON.parse(fs.readFileSync(memPoolFile))
+		}
+		catch (err)
+		{
+			return false // if mempool is empty
+		}
+		for (var i = 0, n = data.length; i < n; i++)
+		{
+			if (data[i].origin == transaction.origin)
+				return true
+		}
+		return false
 	},
 
 	read: function (filename) {

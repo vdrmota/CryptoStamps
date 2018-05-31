@@ -41,7 +41,7 @@ function blockMined(chain, transactionIndex)
 	broadcast.blockchain(blockchainFile)
 	// set pending reward for yourself
 	rewards.pending(chain.chain.slice(-1)[0].hash, rewardsFile) 
-	// retrieve reward and broadcast it
+	// retrieve reward and broadcast it to other's mempools
 	rewards.retrieve(rewardsFile)
 	// remove just-mined transaction from my mempool
 	mempool.remove(transactionIndex)
@@ -53,12 +53,8 @@ function blockMined(chain, transactionIndex)
 
 function blockNotMined(transaction)
 {
-	// check if transaction is still in mempool
-	/*if (mempool.exists(transaction))
-		blockFound = false
-	else	
-		blockFound = true*/
-	blockFound = false
+	// check if transaction is still in mempool; if it isn't, start mining new block
+	blockFound = mempool.exists(transaction) ? false : true
 }
 
 // retrieve miner credentials
@@ -66,10 +62,8 @@ function blockNotMined(transaction)
 let fetchCredentials = helpers.getCredentials(credentialsFile);
 let credentials = new User(fetchCredentials.username, fetchCredentials.privateKey, fetchCredentials.publicKey);
 
-// load blockchain and mempool
-
-//mempool.refresh()
-//blockchain.refresh() 
+// load blockchain from local state
+ 
 var chain = blockchain.read(blockchainFile, difficulty, updateInterval, true)
 var blockHeight = chain.chain.length; 
 
