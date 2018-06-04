@@ -13,6 +13,13 @@ io.on('connection', function (socket){
 		console.log("Emitting new state of blockchain...")
 	});
 
+	// when receiving a new transaction to be added to mempools, emit it to all nodes
+	socket.on('emit_transaction', function (transaction) {
+		// emit to all nodes
+		io.sockets.emit('receive_transaction', transaction[0])
+		console.log("Emitting new transaction...")
+	});
+
 });
 
 http.listen(1337, function () {

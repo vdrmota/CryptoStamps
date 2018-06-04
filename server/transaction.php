@@ -15,18 +15,18 @@ $client = new Client(new Version2X('http://localhost:1337', [
     ]
 ]));
 
-if (!isset($_POST['blockchain']))
+if (!isset($_POST['transaction']))
 {
 	die("Missing file.");
 }
 
-$myfile = fopen("blockchain.txt", "w") or die("Unable to open file!");
-$txt = urldecode($_POST['blockchain']);
+$myfile = fopen("mempool.txt", "w") or die("Unable to open file!");
+$txt = urldecode($_POST['transaction']);
 fwrite($myfile, $txt);
 fclose($myfile);
 
 $client->initialize();
-$client->emit('emit_blockchain', [$txt]);
+$client->emit('emit_transaction', [$txt]);
 $client->close();
 
 ?>

@@ -74,6 +74,7 @@ module.exports = {
 	{
 		chain = blockchain.read(blockchainFile, difficulty, updateInterval, true)
 		blockHeight = chain.chain.length
+		console.log(colors.blue("New blockchain state received."))
 	}
 }
 
@@ -93,7 +94,7 @@ while (true)
 		{
 			if (!emptyMempoolSwitch)
 			{
-				console.log(colors.blue("Mempool is empty. Exiting..."))
+				console.log(colors.blue("Mempool is empty. Waiting..."))
 				emptyMempoolSwitch = true
 			}
 			continue

@@ -43,7 +43,7 @@ module.exports = {
 		var mempool = fs.readFileSync(filename).toString()
 
 		// empty string renders syntax error in JSON
-		if (mempool != "")
+		if (mempool != "" && mempool != "[]")
 			return JSON.parse(mempool)
 		else
 			return false
@@ -63,26 +63,43 @@ module.exports = {
 	transactionStructure: function (transaction) {
 		// type
 		if ((typeof transaction.type) === 'undefined')
-			return false
+			return { "res": false, "message": "Error: Missing type."}
 		// from
 		if ((typeof transaction.from) === 'undefined')
-			return false
+			return { "res": false, "message": "Error: Missing from."}
 		// to
 		if ((typeof transaction.to) === 'undefined')
-			return false
+			return { "res": false, "message": "Error: Missing to."}
 		// stamp
 		if ((typeof transaction.stamp) === 'undefined')
-			return false
+			return { "res": false, "message": "Error: Missing stamp."}
 		// signature
 		if ((typeof transaction.signature) === 'undefined')
-			return false
+			return { "res": false, "message": "Error: Missing signature."}
 		// origin
 		if ((typeof transaction.origin) === 'undefined')
-			return false
+			return { "res": false, "message": "Error: Missing origin."}
 		// timestamp
 		if ((typeof transaction.timestamp) === 'undefined')
-			return false
+			return { "res": false, "message": "Error: Missing timestamp."}
 		
-		return true // transaction structure exists
+		return { "res": true, "message": "Success."} // transaction structure exists
+	},
+
+	// adds a transaction to the local mempool file
+
+	writeTransaction: function(transaction)
+	{
+		var current = fs.readFileSync(memPoolFile)
+		if (current != "")
+		{
+			current = JSON.parse(current)
+			current.push(transaction)
+		}
+		else
+		{
+			current = [JSON.stringify(transaction)]
+		}
+		fs.writeFileSync(memPoolFile, JSON.stringify(current).replace(/\\/g, '').replace('[""', '[').replace('""]', ']').replace('"{', '{').replace('}"', '}'))
 	}
 }

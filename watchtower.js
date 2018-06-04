@@ -1,13 +1,36 @@
 var io = require('socket.io-client');
 var fs = require('fs')
 var socket = io.connect('http://vojtadrmota.com:1337', {reconnect: true});
+var validate = require('./validate.js')
+//var miner = require('./miner.js')
+var mempool = require('./mempool.js')
 
-socket.on('receive_blockchain', function (blockchain) {
-    fs.writeFileSync('blockchain.txt', blockchain);
-});
+const blockchainFile = "blockchain.txt"
+const remoteBlockchainFile = "remoteBlockchain.txt"
+const mempoolFile = "mempool.txt"
 
-// receive mempool transactions when someone else has retrieved a reward and broadcasted it
+socket.on('receive_blockchain', function (blockchain) 
+{
+    fs.writeFileSync(remoteBlockchainFile, blockchain)
+    var validateChain = validate.chain(blockchainFile, remoteBlockchainFile)
+    // log result of validation
+    console.log(validateChain.message)
+    // if validation was successful -> make remote chain local
+    if (validateChain.res)
+    {
+    	fs.writeFileSync(blockchainFile, blockchain)
+    	//miner.updateChain()
 
-// receive new blockchains when someone has mined a block and broadcasted it -> remove these from mempool if valid
+    	// remove origin transaction from local mempool
+    }
+})
 
-// update local blockchain
+socket.on('receive_transaction', function (transaction) 
+{
+	var validateTransaction = validate.transaction(JSON.parse(transaction), blockchainFile, true, true)
+	// log the result of validation
+	console.log(validateTransaction.message)
+	if (validateTransaction.res)
+		// write transaction to local mempool
+		mempool.writeTransaction(transaction)
+})

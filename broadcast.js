@@ -6,6 +6,8 @@ var fs = require('fs')
 var classes = require('./classes.js');
 var Transaction = classes.Transaction;
 
+const mempoolFile = "mempool.txt"
+
 
 module.exports = {
 
@@ -14,19 +16,21 @@ module.exports = {
 	blockchain: function(blockchainFile)
 	{
 		var blockchain = fs.readFileSync(blockchainFile).toString()
+		blockchain = blockchain.replace(/\+/g, "%2B"); 
 		var res = request('POST', 'http://stamps.vojtadrmota.com:80/blockchain.php', {
 			headers: {       
     			'content-type': 'application/x-www-form-urlencoded'
   			},
-			body: "blockchain="+blockchain
+			body: "blockchain="+encodeURIComponent(blockchain)
 		})
 		console.log("Broadcasting blockchain...")
 	},
 
+	// broadcasts the transaction to the relay server
+
 	transaction: function(type, from, to, stamp, signature, origin, timestamp, mempoolFile)
 	{
-		// right now this broadcasts to local mempool, but it should broadcast to actual mempool in the future
-		var transaction = new Transaction(type, from, to, stamp, signature, origin, timestamp)
+		transaction = new Transaction(type, from, to, stamp, signature, origin, timestamp)
 		var current = fs.readFileSync(mempoolFile)
 		if (current != "")
 		{
@@ -38,5 +42,16 @@ module.exports = {
 			current = [JSON.stringify(transaction)]
 		}
 		fs.writeFileSync(mempoolFile, JSON.stringify(current))
+
+		signature = signature.replace(/\+/g, "%2B")
+		origin = origin.replace(/\+/g, "%2B")
+		var transaction = JSON.stringify(new Transaction(type, from, to, stamp, signature, origin, timestamp))
+		var res = request('POST', 'http://stamps.vojtadrmota.com:80/transaction.php', {
+			headers: {       
+    			'content-type': 'application/x-www-form-urlencoded'
+  			},
+			body: "transaction="+encodeURIComponent(transaction)
+		})
+		console.log("Broadcasting transaction...")
 	}
 }
