@@ -9,9 +9,10 @@ var Transaction = classes.Transaction;
 
 module.exports = {
 
+	// broadcasts the blockchain to the relay server
+
 	blockchain: function(blockchainFile)
 	{
-		// add code here that broadcasts the blockchain file
 		var blockchain = fs.readFileSync(blockchainFile).toString()
 		var res = request('POST', 'http://stamps.vojtadrmota.com:80/blockchain.php', {
 			headers: {       

@@ -1,14 +1,5 @@
+var a = parseInt("00003a08e3d0a0b822bf9454a87ccb916c6bfb5e2479e9596baba1238dfac6f5e568b4119f1128da8b47734e8c71a15ccf9ce2f220263f94060e2876244c5313", 16);
+var b = parseInt("00007cef4050f3eae68cf91d4cb67f0c638055cafd93f970af4c84143b7149511642fc0c383933b954c4885646912e052fa8fc9ca2222f07bcb1ecf75efaf78a", 16);
 
-var broadcast = require('./broadcast.js')
-
-
-broadcast.blockchain("blockchain.txt")
-
-
-setTimeout(function() {
-
-	while (true)
-	{
-
-	}
-}, 3000);
+if (a < b)
+	console.log("yes")

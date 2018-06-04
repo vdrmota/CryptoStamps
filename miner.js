@@ -65,7 +65,17 @@ let credentials = new User(fetchCredentials.username, fetchCredentials.privateKe
 // load blockchain from local state
  
 var chain = blockchain.read(blockchainFile, difficulty, updateInterval, true)
-var blockHeight = chain.chain.length; 
+var blockHeight = chain.chain.length
+
+module.exports = {
+	// update chain state if a new one has been received
+	// triggered when watchtower verifies new blocks
+	updateChain: function()
+	{
+		chain = blockchain.read(blockchainFile, difficulty, updateInterval, true)
+		blockHeight = chain.chain.length
+	}
+}
 
 // begin mining
 
@@ -96,8 +106,6 @@ while (true)
 		var randomTransaction = mempool.random(mempoolData)
 		var transaction = randomTransaction[0]
 		var transactionIndex = randomTransaction[1]
-
-		// validate transaction locally
 
 		// store timestamp
 		var timestamp = Date.now()

@@ -1,6 +1,7 @@
 // import functions
 
-var helpers = require('./functions.js');
+var helpers = require('./functions.js')
+var difficultyCheck = require('./difficulty.js')
 
 // import modules
 
@@ -206,7 +207,7 @@ class LoadBlockchain
         var totalWork = 0
         for (var i = 1, n = this.chain.length; i < n; i++)
         {
-            totalWork += this.chain[i].nonce
+            totalWork += difficultyCheck.retrieve(this.chain[i].timestamp, this.chain[i].hash)
         }
         return totalWork
     }
