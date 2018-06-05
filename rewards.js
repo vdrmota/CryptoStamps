@@ -17,7 +17,7 @@ module.exports = {
 		// retrieve each reward
 		for (var i = 0, n = rewards.length; i < n; i++)
 		{
-			if (rewards[i].length > 0)
+			if (rewards[i].length > 1)
 			{
 				// retrieve reward
 				sign.sign(rewards[i])

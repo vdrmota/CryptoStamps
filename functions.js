@@ -6,6 +6,7 @@ var colors = require('colors/safe')
 var request = require('urllib-sync').request;
 const SHA512 = require('js-sha512');
 var bitcoinMessage = require('bitcoinjs-message');
+const credentialsFile = "credentials.txt"
 
 // converts string into hexadecimal
 
@@ -102,16 +103,16 @@ module.exports = {
 
   credentials: function (user)
   {
-    return user["name"]+"\n"+user.publicKey+"\n"+user.privateKey+"\n"
+    return user["name"]+";"+user.publicKey+";"+user.privateKey+""
   },
 
   // retrieves credentials for the user
 
   getCredentials: function(filename)
   {
-    let credentialsFile = (fs.readFileSync(filename).toString()).split("\n");
+    var credentials = (fs.readFileSync(filename).toString()).split(";");
 
-    return {"username": credentialsFile[0], "publicKey": credentialsFile[1], "privateKey": credentialsFile[2]};
+    return {"username": credentials[0], "publicKey": credentials[1], "privateKey": credentials[2]};
   },
 
   // hash string with sha256
@@ -176,6 +177,11 @@ module.exports = {
       var lowerBound = median(localChain, 11) // median of last 11 blocks
       
       return timestamp > lowerBound && timestamp < upperBound
+  },
+
+  fromMe: function(from)
+  {
+      return module.exports.getCredentials(credentialsFile).publicKey == from
   }
 
 };

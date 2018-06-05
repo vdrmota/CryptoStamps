@@ -30,18 +30,6 @@ module.exports = {
 
 	transaction: function(type, from, to, stamp, signature, origin, timestamp, mempoolFile)
 	{
-		transaction = new Transaction(type, from, to, stamp, signature, origin, timestamp)
-		var current = fs.readFileSync(mempoolFile)
-		if (current != "")
-		{
-			current = JSON.parse(current)
-			current.push(transaction)
-		}
-		else
-		{
-			current = [JSON.stringify(transaction)]
-		}
-		fs.writeFileSync(mempoolFile, JSON.stringify(current))
 
 		signature = signature.replace(/\+/g, "%2B")
 		origin = origin.replace(/\+/g, "%2B")

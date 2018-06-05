@@ -1,3 +1,5 @@
-var validate = require('./validate.js')
+var sign = require("./sign.js")
 
-console.log(validate.chain("blockchain.txt", "remoteBlockchain.txt").message)
+
+sign.sign("")
+

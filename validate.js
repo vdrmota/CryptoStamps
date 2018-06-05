@@ -53,7 +53,9 @@ module.exports = {
 				if (mempoolEntry)
 				{
 					if (blockchain.findReward(blockchainFile, transaction.origin))
-					return { "res": false, "message": "Transaction reward already retrieved." }
+						return { "res": false, "message": "Transaction reward already retrieved." }
+					if (helpers.fromMe(transaction.from))
+						return { "res": false, "message": "Transaction is yours (OK)." }
 				}
 				
 				// ensure that signature is a buffer
