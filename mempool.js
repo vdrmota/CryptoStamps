@@ -88,7 +88,7 @@ module.exports = {
 
 	// adds a transaction to the local mempool file
 
-	writeTransaction: function(transaction)
+	writeTransaction: function (transaction)
 	{
 		var current = fs.readFileSync(memPoolFile)
 		if (current != "")
@@ -101,5 +101,23 @@ module.exports = {
 			current = [JSON.stringify(transaction)]
 		}
 		fs.writeFileSync(memPoolFile, JSON.stringify(current).replace(/\\/g, '').replace('[""', '[').replace('""]', ']').replace('"{', '{').replace('}"', '}'))
+	},
+
+	removeBlock: function (origin)
+	{
+		var data = module.exports.read(memPoolFile)
+		// if mempool file is empty -> don't do anything
+		if (!data)
+			return false
+		// else -> remove mempool transactions that have been mined
+		for (var i = 0, n = data.length; i < n; i++)
+		{
+			if (data[i].origin == origin)
+			{
+				data.splice(i)
+				n-- // mempool shrinks with every deletion
+			}
+		}
+		fs.writeFileSync(memPoolFile, JSON.stringify(data))
 	}
 }

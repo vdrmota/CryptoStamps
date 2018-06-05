@@ -185,6 +185,12 @@ module.exports = {
 		if (!newBlocksValid)
 			return {"res": false, "message": "Remote chain contains invalid blocks."}
 
+		// if all blocks are valid -> remove their origins from local mempool
+		for (var i = 0, n = newBlocks.length; i < n; i++)
+		{ 
+			mempool.removeBlock(newBlocks[i].payload.origin)
+		}
+
 		return {"res": true, "message": "Success."} // if the blockchain is fully valid
 	}
 

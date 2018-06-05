@@ -9,7 +9,7 @@ io.on('connection', function (socket){
 	// when receiving an updated blockchain, emit it to all nodes
 	socket.on('emit_blockchain', function (blockchain) {
 		// emit to all nodes
-		io.sockets.emit('receive_blockchain', blockchain)
+		io.sockets.emit('receive_blockchain', blockchain[0])
 		console.log("Emitting new state of blockchain...")
 	});
 
