@@ -53,8 +53,18 @@ function blockMined(chain, transactionIndex)
 
 function blockNotMined(transaction)
 {
-	// check if transaction is still in mempool; if it isn't, start mining new block
-	blockFound = mempool.exists(transaction) ? false : true
+	// check if local chain state has been updated
+	var newchain = blockchain.read(blockchainFile, difficulty, updateInterval, false)
+	if (newchain.calculateWork() != chain.calculateWork())
+	{
+		chain = newchain
+		blockHeight = chain.chain.length
+		blockFound = true
+		console.log(colors.blue("Blockchain updated."))
+	}
+	else
+		// check if transaction is still in mempool; if it isn't, start mining new block
+		blockFound = mempool.exists(transaction) ? false : true
 }
 
 // retrieve miner credentials
@@ -66,17 +76,6 @@ let credentials = new User(fetchCredentials.username, fetchCredentials.privateKe
  
 var chain = blockchain.read(blockchainFile, difficulty, updateInterval, true)
 var blockHeight = chain.chain.length
-
-module.exports = {
-	// update chain state if a new one has been received
-	// triggered when watchtower verifies new blocks
-	updateChain: function()
-	{
-		chain = blockchain.read(blockchainFile, difficulty, updateInterval, true)
-		blockHeight = chain.chain.length
-		console.log(colors.blue("New blockchain state received."))
-	}
-}
 
 // begin mining
 

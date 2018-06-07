@@ -2,7 +2,6 @@ var io = require('socket.io-client');
 var fs = require('fs')
 var socket = io.connect('http://vojtadrmota.com:1337', {reconnect: true});
 var validate = require('./validate.js')
-//var miner = require('./miner.js')
 var mempool = require('./mempool.js')
 var blockchain = require('./blockchain.js')
 
@@ -21,10 +20,8 @@ socket.on('receive_blockchain', function (blockchain)
     // if validation was successful -> make remote chain local
     // also removes local mempool transactions that have been already mined
     if (validateChain.res)
-    {
+        // write transaction to local blockchain
     	fs.writeFileSync(blockchainFile, blockchain)
-    	//miner.updateChain()
-    }
 })
 
 socket.on('receive_transaction', function (transaction) 

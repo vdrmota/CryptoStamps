@@ -30,10 +30,9 @@ module.exports = {
 
 	transaction: function(type, from, to, stamp, signature, origin, timestamp, mempoolFile)
 	{
-		// URL encoding replaces + with whitespace
+		
 		signature = signature.replace(/\+/g, "%2B")
 		origin = origin.replace(/\+/g, "%2B")
-		
 		var transaction = JSON.stringify(new Transaction(type, from, to, stamp, signature, origin, timestamp))
 		var res = request('POST', 'http://stamps.vojtadrmota.com:80/transaction.php', {
 			headers: {       

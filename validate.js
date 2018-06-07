@@ -115,8 +115,8 @@ module.exports = {
 
 		// check that miner didn't mine his/her own reward
 		// disable this during debugging
-		// if (block.issuer == block.payload.from)
-		// 	return {"res": false, "message": "Block miner mined own reward."}
+		if (block.issuer == block.payload.from)
+			return {"res": false, "message": "Block miner mined own reward."}
 
 		// ensure that timestamp wasn't tampered with
 		if (!helpers.timestampCheck(block.timestamp, localChain))
