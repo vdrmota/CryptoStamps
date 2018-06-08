@@ -43,7 +43,7 @@ var newChain = new LoadBlockchain(
         fetchCredentials.publicKey, 
         "HBrLDbPBl+3QVwzgDfLhUllvbIRjmeoXfkgUfxDSDT2Gfgh/SBpZU2azA8/nlUgkSfiJRysNlPd77HlSHUH7V+A=", 
         "0618C48771B01F9818356D6E3DC96B8D9E2B7E37CB078F5120D10567D6DCCF8C542B09F1F0CF59FE08252F86AAA056F2A064096CC37BEF2E27EE5D90D45B9C0D", 
-        177028
+        19970318
       )
 
 // export blockchain into file

@@ -167,7 +167,7 @@ class LoadBlockchain
 
     loadGenesisBlock(timestamp, issuer, signature, hash, nonce) 
     {
-        return new LoadBlock(0, timestamp, "Genesis Block", issuer, signature, hash, nonce);
+        return new LoadBlock(1, timestamp, "Genesis Block", issuer, signature, hash, nonce);
     }
 
     getLatestBlock() 
