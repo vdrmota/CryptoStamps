@@ -8,15 +8,16 @@ var blockchain = require('./blockchain.js')
 var helpers = require('./functions.js')
 var mempool = require('./mempool.js')
 var difficultyCheck = require('./difficulty.js')
+var config = require('./config.js')
 
-const blockchainFile = "blockchain.txt"
-const remoteBlockchainFile = "remoteBlockchain.txt"
-const stampsDir = "./stamps/"
-const difficultyHistFile = "difficultyHist.json"
-const stamps = helpers.listStamps(stampsDir)
+const blockchainFile = config.blockchainFile
+const remoteBlockchainFile = config.remoteBlockchainFile
+const stampsDir = config.stampsDir
+const difficultyHistoryFile = config.difficultyHistoryFile
+const stamps = config.stamps
 const totalStamps = stamps.length
-const updateInterval = 10000 
-const difficulty = 4
+const updateInterval = config.updateInterval 
+const difficulty = config.difficulty
 
 function decodeSignature (buffer) 
 {
@@ -113,7 +114,7 @@ module.exports = {
 		if (!payloadCheck.res)
 			return {"res": false, "message": "Block payload invalid. " + payloadCheck.message}
 
-		// check that miner didn't mine his/her own reward
+		// check that miner didn't mine his/her own payload
 		// disable this during debugging
 		if (block.issuer == block.payload.from)
 			return {"res": false, "message": "Block miner mined own reward."}

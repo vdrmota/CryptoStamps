@@ -1,1 +1,1 @@
-[]
+[{"type":"coinbase","from":"1H32qCqFBr9YLKeBb76uGjSYBd8dhd8zmW","to":"","stamp":5,"signature":"HKEdKG4hADuAaGDOtK/++XzK/aCxBsTWtEqBHmQrHQYveMvLK9ZMC18ctcZeF6SP8GhtSshhfjnnFFfSe56i2/A=","origin":"00000192f046675ea77e00985612a9cf9a75cd780845e21abd55cfaa2e0f9742058f0bd855aad8655a69926de2d97310fd86a035f823382328dc7af94e4800ea","timestamp":1528398100962}]

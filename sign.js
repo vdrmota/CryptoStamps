@@ -1,11 +1,12 @@
 // import modules
 
 var imageHash = require('hasha')
-var bitcoin = require('bitcoinjs-lib');
-var bitcoinMessage = require('bitcoinjs-message');
-var CoinKey = require('coinkey');
-var exec = require('child_process').exec;
+var bitcoin = require('bitcoinjs-lib')
+var bitcoinMessage = require('bitcoinjs-message')
+var CoinKey = require('coinkey')
+var exec = require('child_process').exec
 var colors = require('colors/safe')
+var config = require('./config.js')
 
 // import functions
 
@@ -14,11 +15,11 @@ var broadcast = require('./broadcast.js')
 
 // define constants
 
-const credentialsFile = "credentials.txt"
-const stampsDir = "./stamps/"
-const stamps = helpers.listStamps(stampsDir) // this holds a list of all possible stamps
+const credentialsFile = config.credentialsFile
+const stampsDir = config.stampsDir
+const stamps = config.stamps // this holds a list of all possible stamps
 const totalStamps = stamps.length
-const mempoolFile = "mempool.txt"
+const mempoolFile = config.mempoolFile
 
 module.exports = {
 

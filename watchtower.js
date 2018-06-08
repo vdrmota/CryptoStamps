@@ -4,12 +4,13 @@ var socket = io.connect('http://vojtadrmota.com:1337', {reconnect: true});
 var validate = require('./validate.js')
 var mempool = require('./mempool.js')
 var blockchain = require('./blockchain.js')
+var config = require('./config.js')
 
-const blockchainFile = "blockchain.txt"
-const remoteBlockchainFile = "remoteBlockchain.txt"
-const mempoolFile = "mempool.txt"
-const difficulty = 4
-const updateInterval = 10000
+const blockchainFile = config.blockchainFile
+const remoteBlockchainFile = config.remoteBlockchainFile
+const mempoolFile = config.mempoolFile
+const difficulty = config.difficulty
+const updateInterval = config.updateInterval
 
 socket.on('receive_blockchain', function (blockchain) 
 {

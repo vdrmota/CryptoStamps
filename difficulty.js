@@ -1,6 +1,7 @@
 var fs = require('fs');
+var config = require('./config.js')
 
-const difficultyHistoryFile = "difficultyHist.json"
+const difficultyHistoryFile = config.difficultyHistoryFile
 
 module.exports = {
 	check: function (timestamp, hash)

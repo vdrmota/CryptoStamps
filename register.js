@@ -2,6 +2,7 @@
 
 var fs = require('fs')
 var prompt = require('prompt')
+var config = require('./config.js')
 
 // import functions
 
@@ -14,7 +15,7 @@ var User = classes.User
 
 // define credentials file
 
-const credentialsFile = "credentials.txt"
+const credentialsFile = config.credentialsFile
 
 // check if user already registered
 

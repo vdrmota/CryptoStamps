@@ -10,6 +10,7 @@ var mempool = require('./mempool.js');
 var blockchain = require('./blockchain.js');
 var broadcast = require('./broadcast.js')
 var rewards = require('./rewards.js')
+var config = require('./config.js')
 
 // import classes
 
@@ -21,12 +22,12 @@ var User = classes.User;
 
 // define variables
 
-const difficulty = 4;
-const blockchainFile = "blockchain.txt"
-const mempoolFile = "mempool.txt"
-const rewardsFile = "rewards.txt"
-const credentialsFile = "credentials.txt"
-const updateInterval = 10000 // how often to update mempool (lower number = more often therefore lower chance of orphaned chain, but longer time to mine)
+const difficulty = config.difficulty
+const blockchainFile = config.blockchainFile
+const mempoolFile = config.mempoolFile
+const rewardsFile = config.rewardsFile
+const credentialsFile = config.credentialsFile
+const updateInterval = config.updateInterval // how often to update mempool (lower number = more often therefore lower chance of orphaned chain, but longer time to mine)
 var nonce = 0 // stores nonce in case mining continues after mempool refresh
 var emptyMempoolSwitch = false // only alert client if mempool is empty once
 var blockFound = true // triggers the mining of a new block

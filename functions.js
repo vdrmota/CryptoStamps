@@ -4,9 +4,10 @@ var CoinKey = require('coinkey');
 var fs = require('fs');
 var colors = require('colors/safe')
 var request = require('urllib-sync').request;
-const SHA512 = require('js-sha512');
+var config = require('./config.js')
+const SHA512 = config.SHA512
 var bitcoinMessage = require('bitcoinjs-message');
-const credentialsFile = "credentials.txt"
+const credentialsFile = config.credentialsFile
 
 // converts string into hexadecimal
 

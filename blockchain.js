@@ -10,21 +10,9 @@ var classes = require('./classes.js');
 var Block = classes.Block;
 var LoadBlock = classes.LoadBlock;
 var LoadBlockchain = classes.LoadBlockchain;
+var config = require('./config.js')
 
 module.exports = {
-
-  // downloads blockchain
-
-  refresh: function() {
-		// define mempool location and output file
-
-		const blockchainUrl = "http://stamps.vojtadrmota.com/blockchain.txt"
-		const blockchainFile = "blockchain.txt"
-
-		// retrieve/update local mempool from server; periodically update blockchain
-
-		helpers.getUrlContents(blockchainUrl, blockchainFile)
-  },
 
   // updates local state of blockchain
 

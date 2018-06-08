@@ -3,10 +3,11 @@ var fs = require('fs')
 
 // import classes
 
-var classes = require('./classes.js');
+var classes = require('./classes.js')
 var Transaction = classes.Transaction;
+var config = require('./config.js')
 
-const mempoolFile = "mempool.txt"
+const mempoolFile = config.mempoolFile
 
 
 module.exports = {

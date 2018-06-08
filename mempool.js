@@ -1,19 +1,14 @@
 // import functions
 
 var helpers = require('./functions.js');
-
+var config = require('./config.js')
 
 // import modules
 var fs = require('fs');
 
-const memPoolUrl = "http://stamps.vojtadrmota.com/mempool.txt"
-const memPoolFile = "mempool.txt"
+const memPoolFile = config.memPoolFile
 
 module.exports = {
-
-    refresh: function () {
-		helpers.getUrlContents(memPoolUrl, memPoolFile)
-	},
 
 	remove: function (transactionIndex) {
 		var data = JSON.parse(fs.readFileSync(memPoolFile))
@@ -44,7 +39,13 @@ module.exports = {
 
 		// empty string renders syntax error in JSON
 		if (mempool != "" && mempool != "[]")
+			try {
 			return JSON.parse(mempool)
+			} 
+			catch (err)
+			{
+				return module.exports.read(filename)
+			}
 		else
 			return false
 	},
