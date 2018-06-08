@@ -1,0 +1,33 @@
+{
+  "name": "russia2018",
+  "version": "1.0.0",
+  "description": "The digital, decentralized postage stamp protocol",
+  "main": "watchtower.js",
+  "dependencies": {
+    "bitcoinjs-lib": "^3.3.2",
+    "bitcoinjs-message": "^2.0.0",
+    "child_process": "^1.0.2",
+    "coinkey": "^3.0.0",
+    "colors": "^1.3.0",
+    "fs": "^0.0.1-security",
+    "hasha": "^3.0.0",
+    "prompt": "^1.0.0",
+    "socket.io-client": "^2.1.1",
+    "sync-request": "^6.0.0",
+    "urllib-sync": "^1.1.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vdrmota/CryptoStamps.git"
+  },
+  "author": "Vojta Drmota",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vdrmota/CryptoStamps/issues"
+  },
+  "homepage": "https://github.com/vdrmota/CryptoStamps#readme"
+}
