@@ -1,6 +1,8 @@
 var io = require('socket.io-client');
 var fs = require('fs')
-var socket = io.connect('http://vojtadrmota.com:1337', {reconnect: true});
+var config = require('./config.js')
+const relayServer = config.relayServer
+var socket = io.connect(relayServer, {reconnect: true});
 var validate = require('./validate.js')
 var mempool = require('./mempool.js')
 var blockchain = require('./blockchain.js')
@@ -33,4 +35,20 @@ socket.on('receive_transaction', function (transaction)
 	if (validateTransaction.res)
 		// write transaction to local mempool
 		mempool.writeTransaction(transaction)
+})
+
+// when someone is asking for the hash of local blockchain state
+socket.on('send_hash', function (id) 
+{
+    var chainHash = blockchain.getHash()
+    socket.emit('emit_hash', id, chainHash)
+    console.log("Emitted chain hash (OK).")
+})
+
+// when someone is asking for local blockchain state
+socket.on('send_chain', function (id) 
+{
+    var chain = fs.readFileSync(blockchainFile).toString()
+    socket.emit('emit_chain_from_node', chain, id)
+    console.log("Emitted chain (OK).")
 })

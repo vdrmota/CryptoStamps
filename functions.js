@@ -180,9 +180,30 @@ module.exports = {
       return timestamp > lowerBound && timestamp < upperBound
   },
 
-  fromMe: function(from)
+  fromMe: function (from)
   {
       return module.exports.getCredentials(credentialsFile).publicKey == from
+  },
+ 
+  mode: function (array)
+  {
+
+      var maxCount = 0
+      var map = {}
+      var mode = {"from": null, "hash": null}
+
+      for (var i = 0, n = array.length; i < n; i++)
+      {
+        map[array[i].hash] = map[array[i].hash] ? map[array[i].hash]+1 : 1
+        if (map[array[i].hash] > maxCount)
+        {
+          mode.hash = array[i].hash
+          mode.from = array[i].from
+          maxCount = map[array[i].hash]
+        }
+      }
+      
+      return mode
   }
 
 };

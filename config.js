@@ -1,5 +1,3 @@
-var helpers = require('./functions.js')
-
 const blockchainFile = "blockchain.txt" // local blockchain file
 const mempoolFile = "mempool.txt" // local mempool file
 const difficultyHistoryFile = "difficultyHist.json" // local difficulty history file
@@ -9,9 +7,10 @@ const difficulty = 5; // blockchain difficulty
 const rewardsFile = "rewards.txt" // local rewards file
 const updateInterval = 10000 // how often to update mempool (lower number = more often therefore lower chance of orphaned chain, but longer time to mine)
 const stampsDir = "./stamps/" // local stamps directory
-const stamps = helpers.listStamps(stampsDir) // this holds a list of all possible stamps
-const totalStamps = stamps.length
 const remoteBlockchainFile = "remoteBlockchain.txt" // local file of remote (incoming) blockchain
+const relayServer = 'http://vojtadrmota.com:1337' // location of relay server
+const blockchainServer = "http://stamps.vojtadrmota.com:80/blockchain.php" // blockchain relay
+const transactionServer = "http://stamps.vojtadrmota.com:80/transaction.php" // transaction relay
 
 // export
 
@@ -24,6 +23,7 @@ exports.difficulty = difficulty
 exports.rewardsFile = rewardsFile
 exports.updateInterval = updateInterval
 exports.stampsDir = stampsDir
-exports.stamps = stamps
-exports.totalStamps = totalStamps
 exports.remoteBlockchainFile = remoteBlockchainFile
+exports.relayServer = relayServer
+exports.blockchainServer = blockchainServer
+exports.transactionServer = transactionServer

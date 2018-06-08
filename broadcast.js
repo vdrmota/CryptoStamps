@@ -8,7 +8,8 @@ var Transaction = classes.Transaction;
 var config = require('./config.js')
 
 const mempoolFile = config.mempoolFile
-
+const blockchainServer = config.blockchainServer
+const transactionServer = config.transactionServer
 
 module.exports = {
 
@@ -18,7 +19,7 @@ module.exports = {
 	{
 		var blockchain = fs.readFileSync(blockchainFile).toString()
 		blockchain = blockchain.replace(/\+/g, "%2B"); 
-		var res = request('POST', 'http://stamps.vojtadrmota.com:80/blockchain.php', {
+		var res = request('POST', blockchainServer, {
 			headers: {       
     			'content-type': 'application/x-www-form-urlencoded'
   			},
@@ -35,7 +36,7 @@ module.exports = {
 		signature = signature.replace(/\+/g, "%2B")
 		origin = origin.replace(/\+/g, "%2B")
 		var transaction = JSON.stringify(new Transaction(type, from, to, stamp, signature, origin, timestamp))
-		var res = request('POST', 'http://stamps.vojtadrmota.com:80/transaction.php', {
+		var res = request('POST', transactionServer, {
 			headers: {       
     			'content-type': 'application/x-www-form-urlencoded'
   			},

@@ -12,6 +12,8 @@ var LoadBlock = classes.LoadBlock;
 var LoadBlockchain = classes.LoadBlockchain;
 var config = require('./config.js')
 
+const blockchainFile = config.blockchainFile
+
 module.exports = {
 
   // updates local state of blockchain
@@ -106,5 +108,10 @@ module.exports = {
         	}
         }
         return newBlocks
+  },
+
+  getHash: function ()
+  {
+      return helpers.generateHash(fs.readFileSync(blockchainFile).toString())
   }
 }

@@ -17,7 +17,7 @@ var broadcast = require('./broadcast.js')
 
 const credentialsFile = config.credentialsFile
 const stampsDir = config.stampsDir
-const stamps = config.stamps // this holds a list of all possible stamps
+const stamps = helpers.listStamps(stampsDir) // this holds a list of all possible stamps
 const totalStamps = stamps.length
 const mempoolFile = config.mempoolFile
 
