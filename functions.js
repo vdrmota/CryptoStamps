@@ -142,7 +142,7 @@ module.exports = {
 
   findNumFromHash: function(hash, totalStamps)
   {
-    let length = hash.length
+    var length = hash.length
     return (parseInt(hash[length - 4], 16) + parseInt(hash[length - 3], 16) + parseInt(hash[length - 2], 16) + parseInt(hash[length - 1], 16)) % totalStamps
   },
 

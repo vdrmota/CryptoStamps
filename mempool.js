@@ -6,20 +6,20 @@ var config = require('./config.js')
 // import modules
 var fs = require('fs');
 
-const memPoolFile = config.memPoolFile
+const mempoolFile = config.mempoolFile
 
 module.exports = {
 
 	remove: function (transactionIndex) {
-		var data = JSON.parse(fs.readFileSync(memPoolFile))
+		var data = JSON.parse(fs.readFileSync(mempoolFile))
 		data.splice(transactionIndex, 1)
-		fs.writeFileSync(memPoolFile, JSON.stringify(data))
+		fs.writeFileSync(mempoolFile, JSON.stringify(data))
 	},
 
 	exists: function (transaction) {
 		try
 		{
-			var data = JSON.parse(fs.readFileSync(memPoolFile))
+			var data = JSON.parse(fs.readFileSync(mempoolFile))
 		}
 		catch (err)
 		{
@@ -91,7 +91,7 @@ module.exports = {
 
 	writeTransaction: function (transaction)
 	{
-		var current = fs.readFileSync(memPoolFile)
+		var current = fs.readFileSync(mempoolFile)
 		if (current != "")
 		{
 			current = JSON.parse(current)
@@ -101,12 +101,12 @@ module.exports = {
 		{
 			current = [JSON.stringify(transaction)]
 		}
-		fs.writeFileSync(memPoolFile, JSON.stringify(current).replace(/\\/g, '').replace('[""', '[').replace('""]', ']').replace('"{', '{').replace('}"', '}'))
+		fs.writeFileSync(mempoolFile, JSON.stringify(current).replace(/\\/g, '').replace('[""', '[').replace('""]', ']').replace('"{', '{').replace('}"', '}'))
 	},
 
 	removeBlock: function (origin)
 	{
-		var data = module.exports.read(memPoolFile)
+		var data = module.exports.read(mempoolFile)
 		// if mempool file is empty -> don't do anything
 		if (!data)
 			return false
@@ -119,6 +119,6 @@ module.exports = {
 				n-- // mempool shrinks with every deletion
 			}
 		}
-		fs.writeFileSync(memPoolFile, JSON.stringify(data))
+		fs.writeFileSync(mempoolFile, JSON.stringify(data))
 	}
 }
