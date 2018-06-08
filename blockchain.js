@@ -29,7 +29,15 @@ module.exports = {
 
 		// load blockchain from text file including the genesis block
 
-		let newChain = new LoadBlockchain(difficulty, interval, contents.chain[0].timestamp, contents.chain[0].issuer, contents.chain[0].signature, contents.chain[0].hash, contents.chain[0].nonce);
+		var newChain = new LoadBlockchain(
+        difficulty, 
+        interval, 
+        contents.chain[0].timestamp, 
+        contents.chain[0].issuer, 
+        contents.chain[0].signature, 
+        contents.chain[0].hash, 
+        contents.chain[0].nonce
+      )
 
 		// load all already-mined blocks from text file into blockchain
 

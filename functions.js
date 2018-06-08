@@ -174,7 +174,7 @@ module.exports = {
 
   timestampCheck: function (timestamp, localChain)
   {
-      var upperBound = Date.now() + 7200 // 2 hours from now
+      var upperBound = Date.now() + 86400 // 24 hours from now
       var lowerBound = median(localChain, 11) // median of last 11 blocks
       
       return timestamp > lowerBound && timestamp < upperBound
@@ -202,7 +202,7 @@ module.exports = {
           maxCount = map[array[i].hash]
         }
       }
-      
+
       return mode
   }
 
