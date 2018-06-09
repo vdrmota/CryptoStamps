@@ -59,7 +59,7 @@ function blockNotMined(transaction)
 	if (newchain.calculateWork() != chain.calculateWork())
 	{
 		chain = newchain
-		blockHeight = chain.chain.length
+		blockHeight = chain.chain.length + 1 // include genesis block
 		blockFound = true
 		console.log(colors.blue("Blockchain updated."))
 	}
@@ -76,7 +76,7 @@ let credentials = new User(fetchCredentials.username, fetchCredentials.privateKe
 // load blockchain from local state
  
 var chain = blockchain.read(blockchainFile, difficulty, updateInterval, true)
-var blockHeight = chain.chain.length
+var blockHeight = chain.chain.length + 1 // include genesis block
 
 // begin mining
 

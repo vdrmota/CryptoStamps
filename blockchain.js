@@ -51,7 +51,7 @@ module.exports = {
 		}
 
 		if (verbose)
-			console.log(colors.green("Successfully loaded " + (l-1) + " blocks"))
+			console.log(colors.green("Successfully loaded " + (l) + " blocks"))
 
 		return newChain
 
