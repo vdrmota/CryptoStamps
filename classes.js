@@ -26,7 +26,7 @@ class Block
         this.payload = payload;
         this.signature = this.signBlock(privateKey);
         this.issuer = issuer;
-        this.nonce = 0;
+        this.nonce = Math.floor(Math.random() * 1000000);
         this.hash = this.calculateHash();
     }
 
