@@ -1,7 +1,7 @@
 // load modules
 
-var CoinKey = require('coinkey');
-var fs = require('fs');
+var CoinKey = require('coinkey')
+var fs = require('fs')
 var colors = require('colors/safe')
 var request = require('urllib-sync').request;
 var config = require('./config.js')

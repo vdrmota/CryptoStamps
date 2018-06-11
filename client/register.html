@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="register.js"></script>
+<style type="text/css">
+    .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    }
+</style>
+</head>
+<body>
+    <div id="main">
+        <form method="POST" action="" class="center">
+            Pick a username: <input type="text" name="username" id="username" />
+            <br>
+            <input type="submit" value="Register!" onclick="register(document.getElementById('username').value)"/>
+        </form>
+    </div>
+</body>
+</html>

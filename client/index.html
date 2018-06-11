@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Russia 2018 CryptoStamps</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
+<script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+<script type="text/javascript" src="script.js"></script>
+</head>
+<body>
+<div style="position: absolute; left: 10px; right: 10px; top: 10px; bottom: 10px;">
+  <div class="well" style="float: left; width: 160px; padding: 8px;">
+    <ul class="nav nav-list" id="sidebar">
+      <li class="nav-header">Menu</li>
+      <li class="active">
+        <a href="#" nw-path="collection" name="collection"><i class="icon-white icon-user"></i> Collection</a>
+      </li>
+      <li>
+        <a href="#" nw-path="keys" name="keys"><i class="icon-globe"></i> Exchange</a>
+      </li>
+      <li>
+        <a href="#" nw-path="~/Pictures"><i class="icon-screenshot"></i> Stadium</a>
+      </li>
+      <li>
+        <a href="#" nw-path="~/Music"><i class="icon-list-alt"></i> Leaderboard</a>
+      </li>
+      <li class="nav-header">Blockchain</li>
+      <li><a href="#" nw-call="explorer" onclick="App.explorer()"><i class="icon-eye-open"></i> Block Explorer</a></li>
+      <li class="nav-header">Mining</li>
+      <li><a href="#" nw-call="about" onclick="App.about()"><i class="icon-off"></i> Start Mining</a></li>
+      <li class="nav-header">Settings</li>
+      <li><a href="#" nw-path="keys" name="keys"><i class="icon-lock"></i> Keys</a></li>
+      <li class="nav-header">About</li>
+      <li><a href="#" nw-call="about" onclick="App.about()"><i class="icon-question-sign"></i> FAQ</a></li>
+      <li><a href="#" nw-call="about" onclick="App.about()"><i class="icon-info-sign"></i> About</a></li>
+    </ul>
+  </div>
+
+  <div style="float: left; position: absolute; left: 210px; right: 0; top: 0; bottom: 50px">
+    <div class="row">
+      <ul class="breadcrumb">Welcome</ul>
+    </div>
+    <div class="row" style="background: #FFF; -webkit-border-radius: 2px; margin: -5px 1px 0 -19px; height: 100%; overflow: auto">
+      <div id="content"></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
